@@ -9,12 +9,25 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@awesome.me/kit-a5b8ddbb94": "^1.0.4",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@hookform/resolvers": "^5.0.1",
+    "@radix-ui/react-toast": "^1.2.6",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
     "isbot": "^5.1.27",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "^7.5.3"
+    "react-router": "^7.5.3",
+    "react-spring": "^9.7.5",
+    "tailwind-merge": "^3.1.0",
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.3",
@@ -22,9 +35,16 @@
     "@types/node": "^20",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "dotenv-cli": "^8.0.0",
     "tailwindcss": "^4.1.4",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "yarn@4.6.0"
 }
