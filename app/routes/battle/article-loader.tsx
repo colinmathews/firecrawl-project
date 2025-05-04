@@ -6,8 +6,6 @@ import { Progress } from "~/components/progress";
 import { toast } from "~/components/toast/use-toast";
 
 const LOADING_MESSAGES = [
-  "Digging up the news of the day...",
-  "Scanning headlines across the globe...",
   "Gathering perspectives from different sources...",
   "Analyzing media coverage...",
   "Fact-checking the stories...",
@@ -16,7 +14,6 @@ const LOADING_MESSAGES = [
   "Examining news narratives...",
   "Processing media reports...",
   "Investigating news angles...",
-  "Cross-referencing sources...",
 ];
 
 export default function ArticleLoader({
@@ -55,6 +52,14 @@ export default function ArticleLoader({
     error?: any;
   }>();
 
+  const hasError = useMemo(() => {
+    return (
+      fetcherGenerateSources.data?.error ||
+      fetcherGenerateArticles.data?.error ||
+      (sources && sources.length === 0)
+    );
+  }, [fetcherGenerateSources.data, fetcherGenerateArticles.data, sources]);
+
   // Get articles for the topic from this page
   useEffect(() => {
     fetcherGenerateSources.submit(
@@ -85,12 +90,16 @@ export default function ArticleLoader({
       return;
     }
 
-    if (
-      fetcherGenerateSources.data &&
-      fetcherGenerateSources.data.sources &&
-      fetcherGenerateSources.data.sources.length > 0
-    ) {
+    if (fetcherGenerateSources.data && fetcherGenerateSources.data.sources) {
       setSources(fetcherGenerateSources.data.sources);
+      if (fetcherGenerateSources.data.sources.length === 0) {
+        toast({
+          title: "No sources found",
+          description:
+            "No sources were found for this topic. Please try again.",
+          variant: "destructive",
+        });
+      }
     } else {
       setSources(null);
     }
@@ -165,8 +174,25 @@ export default function ArticleLoader({
 
   return (
     <div className="flex flex-col gap-4 items-center">
-      <div className="text-center text-gray-500">{loadingMessage}</div>
-      <Progress value={progress} />
+      {hasError && (
+        <div className="text-center text-red-500">
+          {sources && sources.length === 0 ? (
+            <>No sources were found for this topic. Please try again.</>
+          ) : (
+            <>
+              There was an error loading articles for this topic. Please try
+              again.
+            </>
+          )}
+        </div>
+      )}
+
+      {!hasError && (
+        <>
+          <div className="text-center text-gray-500">{loadingMessage}</div>
+          <Progress value={progress} />
+        </>
+      )}
     </div>
   );
 }

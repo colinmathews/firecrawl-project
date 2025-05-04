@@ -8,9 +8,10 @@ import {
   type NewsArticleRecord,
 } from "@/lib/db/collections/news-article";
 import ArticleLoader from "./article-loader";
+import SelectedTopic from "./selected-topic";
+import SourceAnalysis from "./source-analysis";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  console.log(`todo: loader`);
   const params = new URL(request.url).searchParams;
   const topicId = params.get("topic");
 
@@ -45,16 +46,37 @@ export default function Battle({ loaderData }: Route.ComponentProps) {
     return redirect("/");
   }
 
+  const cancelParams = new URLSearchParams({
+    day: loaderData.topic.DayShortName,
+  });
+
   return (
-    <>
+    <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
+      <SelectedTopic
+        topic={loaderData.topic}
+        cancelUrl={`/?${cancelParams.toString()}`}
+      />
+
       {!articles && (
-        <ArticleLoader
-          topicId={loaderData.topic.id}
-          topicName={loaderData.topic.Name}
-          onArticlesGenerated={setArticles}
-        />
+        <div className="mt-12 w-[500px]">
+          <ArticleLoader
+            topicId={loaderData.topic.id}
+            topicName={loaderData.topic.Name}
+            onArticlesGenerated={setArticles}
+          />
+        </div>
       )}
-      {articles && <div>Articles loaded</div>}
-    </>
+
+      {articles && (
+        <div className="w-full overflow-x-auto">
+          <div className="flex gap-4 mx-auto pl-44">
+            {articles.map((article) => (
+              <SourceAnalysis key={article.AutoId} article={article} />
+            ))}
+            <div className="w-16 h-16 shrink-0" />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

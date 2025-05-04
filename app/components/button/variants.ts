@@ -15,9 +15,9 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default: [
-          "bg-app-yellow text-app-violet shadow-sm border border-app-yellow",
-          "hover:bg-app-yellow/90 hover:border-app-violet",
-          "active:ring-2 active:ring-app-yellow",
+          "bg-app-orange-500 text-white shadow-sm border border-app-orange-500",
+          "hover:bg-app-orange-50 hover:text-app-orange-500",
+          "active:ring-2 active:ring-app-orange-500",
         ],
         outline: [
           "border border-app-yellow text-app-yellow shadow-xs hover:bg-app-yellow hover:text-app-violet",
@@ -28,8 +28,8 @@ export const buttonVariants = cva(
           "active:ring-2 active:ring-app-yellow",
         ],
         minimal: [
-          "bg-transparent text-white hover:bg-app-violet-200/80",
-          "active:ring-2 active:ring-app-yellow",
+          "bg-transparent text-gray-700 hover:bg-app-orange-50 hover:border hover:border-app-orange-500/80",
+          "active:ring-2 active:ring-app-orange-500",
         ],
         link: ["text-app-pink-400 hover:text-app-pink-500 hover:underline"],
         "yellow-link": ["text-app-yellow hover:underline"],

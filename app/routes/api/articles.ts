@@ -30,9 +30,9 @@ export async function action({ request }: ActionFunctionArgs) {
     const service = new AnalyzeSources();
     const analyzedArticles = await service.analyzeArticles(sources);
 
-    console.log(
-      `todo: analyzed articles: ${JSON.stringify(analyzedArticles, null, 2)}`
-    );
+    if (analyzedArticles.length === 0) {
+      return { error: "No articles could be found for this topic" };
+    }
 
     // Save articles to db
     const articlesColl = new NewsArticleCollection();
