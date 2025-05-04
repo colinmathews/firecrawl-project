@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { NewsTopicCollection } from "@/lib/db/collections/news-topic";
-import type { SourceLink } from "@/lib/services/analyze-sources";
-import { useEffect, useMemo, useState } from "react";
-import { redirect, useFetcher, type LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
+import { redirect, type LoaderFunctionArgs } from "react-router";
 import type { Route } from "./+types/index";
 import {
   NewsArticleCollection,

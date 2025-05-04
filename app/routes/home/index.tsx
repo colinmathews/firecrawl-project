@@ -10,10 +10,13 @@ import { toShortISOString } from "@/lib/utils/dates";
 import TopicLoader from "./topic-loader";
 import TopicCard from "./topic-card";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Firecrawl project by Colin Mathews" },
+    {
+      name: "description",
+      content: "Firecrawl project by Colin Mathews",
+    },
   ];
 }
 

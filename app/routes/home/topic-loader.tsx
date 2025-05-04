@@ -47,6 +47,7 @@ export default function TopicLoader({
   // Fetchers
   const fetcherGenerateTopics = useFetcher<{
     topics?: NewsTopicRecord[];
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     error?: any;
   }>();
 
@@ -62,7 +63,7 @@ export default function TopicLoader({
         encType: "application/x-www-form-urlencoded",
       }
     );
-  }, [day]);
+  }, [day, fetcherGenerateTopics]);
 
   // Assign sources when it finishes
   useEffect(() => {
@@ -90,7 +91,11 @@ export default function TopicLoader({
     } else {
       setTopics(null);
     }
-  }, [fetcherGenerateTopics.data, fetcherGenerateTopics.state]);
+  }, [
+    fetcherGenerateTopics.data,
+    fetcherGenerateTopics.state,
+    onTopicsGenerated,
+  ]);
 
   // Update progress over time
   useEffect(() => {

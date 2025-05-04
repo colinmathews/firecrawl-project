@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { NewsArticleRecord } from "@/lib/db/collections/news-article";
 import type { SourceLink } from "@/lib/services/analyze-sources";
 import { useEffect, useMemo, useState } from "react";
@@ -56,9 +58,15 @@ export default function ArticleLoader({
     return (
       fetcherGenerateSources.data?.error ||
       fetcherGenerateArticles.data?.error ||
-      (sources && sources.length === 0)
+      (sources && sources.length === 0) ||
+      (articles && articles.length === 0)
     );
-  }, [fetcherGenerateSources.data, fetcherGenerateArticles.data, sources]);
+  }, [
+    fetcherGenerateSources.data,
+    fetcherGenerateArticles.data,
+    sources,
+    articles,
+  ]);
 
   // Get articles for the topic from this page
   useEffect(() => {
@@ -72,7 +80,7 @@ export default function ArticleLoader({
         encType: "application/x-www-form-urlencoded",
       }
     );
-  }, [topicName]);
+  }, [topicName, fetcherGenerateSources]);
 
   // Assign sources when it finishes
   useEffect(() => {
@@ -120,7 +128,7 @@ export default function ArticleLoader({
         }
       );
     }
-  }, [sources]);
+  }, [sources, fetcherGenerateArticles, topicId]);
 
   useEffect(() => {
     if (fetcherGenerateArticles.state !== "idle") {
@@ -136,17 +144,26 @@ export default function ArticleLoader({
       });
     }
 
-    if (
-      fetcherGenerateArticles.data &&
-      fetcherGenerateArticles.data.articles &&
-      fetcherGenerateArticles.data.articles.length > 0
-    ) {
+    if (fetcherGenerateArticles.data && fetcherGenerateArticles.data.articles) {
       setArticles(fetcherGenerateArticles.data.articles);
-      onArticlesGenerated(fetcherGenerateArticles.data.articles);
+      if (fetcherGenerateArticles.data.articles.length === 0) {
+        toast({
+          title: "No articles found",
+          description:
+            "No articles were found for this topic. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        onArticlesGenerated(fetcherGenerateArticles.data.articles);
+      }
     } else {
       setArticles(null);
     }
-  }, [fetcherGenerateArticles.data, fetcherGenerateArticles.state]);
+  }, [
+    fetcherGenerateArticles.data,
+    fetcherGenerateArticles.state,
+    onArticlesGenerated,
+  ]);
 
   // Update progress over time
   useEffect(() => {
@@ -178,6 +195,8 @@ export default function ArticleLoader({
         <div className="text-center text-red-500">
           {sources && sources.length === 0 ? (
             <>No sources were found for this topic. Please try again.</>
+          ) : articles && articles.length === 0 ? (
+            <>No articles were found for this topic. Please try again.</>
           ) : (
             <>
               There was an error loading articles for this topic. Please try
