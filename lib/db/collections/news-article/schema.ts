@@ -15,7 +15,7 @@ export const NewsArticleSchema = RecordBaseSchema.extend({
   Source: z.string().min(1),
   Headline: z.string().min(1),
   Url: z.string().url(),
-  BiasRating: z.number().min(-100).max(100),
+  "Bias Rating": z.number().min(-100).max(100),
   Analysis: z.string(),
 });
 
@@ -23,12 +23,6 @@ export const SerializerSchema = NewsArticleSchema.omit({
   id: true,
   createdTime: true,
   AutoId: true,
-  Headline: true,
-  Source: true,
-  Url: true,
-  BiasRating: true,
-  Analysis: true,
-  "Topic AutoId": true,
 })
   .extend({
     Topic: NewsArticleSchema.shape.Topic.transform((val) => (val ? [val] : [])),

@@ -1,7 +1,7 @@
 import type { SomeZodObject } from "zod";
 import type { RecordBase } from "./record-base";
 
-export type CollectionBaseOptions<T extends RecordBase> = {
+export type CollectionBaseOptions = {
   tableId: string;
   schema: Pick<SomeZodObject, "shape">;
   serializer: Pick<SomeZodObject, "parseAsync">;

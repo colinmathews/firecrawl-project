@@ -18,10 +18,10 @@ export class NewsArticleCollection extends CollectionBase<NewsArticleRecord> {
     });
   }
 
-  async findAllByTopic(topicAutoId: string): Promise<NewsArticleRecord[]> {
+  async findAllByTopic(topicAutoId: number): Promise<NewsArticleRecord[]> {
     const result = await this.select({
       filterByFormula: `FIND("${this.encodeFormulaValue(
-        topicAutoId
+        topicAutoId.toString()
       )}", ARRAYJOIN(Topic, ","))`,
     });
     return result;

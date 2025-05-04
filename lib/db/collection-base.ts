@@ -7,9 +7,9 @@ import { deserialize } from "./utils/deserialize";
 
 export class CollectionBase<T extends RecordBase> {
   protected readonly db: Airtable;
-  protected readonly options: CollectionBaseOptions<T>;
+  protected readonly options: CollectionBaseOptions;
 
-  constructor(options: CollectionBaseOptions<T>) {
+  constructor(options: CollectionBaseOptions) {
     this.db = new Airtable({ tableId: options.tableId });
     this.options = options;
   }
@@ -74,8 +74,6 @@ export class CollectionBase<T extends RecordBase> {
   }
 
   async update(record: T): Promise<T> {
-    const fields = Object.keys(this.options.schema.shape);
-
     // Transform into db record
     const serialized = (await this.options.serializer.parseAsync(record)) as T;
 

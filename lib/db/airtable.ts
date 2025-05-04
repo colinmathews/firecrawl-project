@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import AirtableApi, {
   type Records,
   type FieldSet,

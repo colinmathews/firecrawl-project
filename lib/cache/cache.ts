@@ -1,9 +1,6 @@
 import type { ICache, CachedItemOptions, CacheKeyValue } from "./icache";
 import { MemoryCache } from "./memory-cache";
 import { BadEnvironmentError } from "../errors";
-import { Logger } from "../logger";
-
-const REDIS_CACHE_PREFIX = "cache:";
 
 export type CacheName = "firecrawl-project";
 
@@ -19,7 +16,7 @@ function factory(cacheName: CacheName): ICache {
 /**
  * Gets the prefix used for all keys on the cache by this name.
  */
-function getCachePrefix(cacheName: CacheName): string {
+function getCachePrefix(): string {
   return "";
 }
 
@@ -91,7 +88,7 @@ class Cache {
     if (options.maxBytesOfAnyItem) {
       const valueSize = Buffer.byteLength(value);
       if (valueSize > options.maxBytesOfAnyItem) {
-        Logger.warn({
+        console.warn({
           message:
             "Skipping storing cache item because it exceeds the allowed size",
           valueSize,
@@ -126,7 +123,7 @@ class Cache {
     cacheName: CacheName,
     prefix: string
   ): Promise<{ countDeleted: number }> {
-    const prefixForCache = `${getCachePrefix(cacheName)}${prefix}`;
+    const prefixForCache = `${getCachePrefix()}${prefix}`;
     const cache = this.getCache(cacheName);
     return await cache.removeByPrefix(prefixForCache);
   }
@@ -136,7 +133,7 @@ class Cache {
     prefix: string,
     options?: { maxKeys?: number }
   ): Promise<CacheKeyValue[]> {
-    const prefixForCache = `${getCachePrefix(cacheName)}${prefix}`;
+    const prefixForCache = `${getCachePrefix()}${prefix}`;
     const cache = this.getCache(cacheName);
     return await cache.getByPrefix(prefixForCache, options);
   }
