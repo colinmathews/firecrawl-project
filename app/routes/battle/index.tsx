@@ -11,6 +11,7 @@ import {
 import ArticleLoader from "./article-loader";
 import SelectedTopic from "./selected-topic";
 import SourceAnalysis from "./source-analysis";
+import { cn } from "@/lib/utils/cn";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const params = new URL(request.url).searchParams;
@@ -69,13 +70,15 @@ export default function Battle({ loaderData }: Route.ComponentProps) {
       )}
 
       {articles && (
-        <div className="w-full overflow-x-auto">
-          <div className="flex gap-4 mx-auto pl-44">
-            {articles.map((article) => (
-              <SourceAnalysis key={article.AutoId} article={article} />
-            ))}
-            <div className="w-16 h-16 shrink-0" />
-          </div>
+        <div
+          className={cn(
+            "grid gap-4 mx-auto",
+            articles.length === 1 ? "grid-cols-1" : "grid-cols-2"
+          )}
+        >
+          {articles.map((article) => (
+            <SourceAnalysis key={article.AutoId} article={article} />
+          ))}
         </div>
       )}
     </div>
