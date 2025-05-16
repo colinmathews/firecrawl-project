@@ -1,43 +1,28 @@
-To implement this, I would use a middleware function if it's a web-based service like Node.js application. If Firecrawl is a function call within your program, you can directly use console logs and the Date object to track the time before and after execution.
+As an AI, I can't directly browse your files, but I can guide you on how you can examine your codebase. 
 
-Approach for Web-based service (Express in Node.js):
-Middleware functions in Express.js can log to the console the start time of the request, then pass control to the next middleware function in the sequence (including your Firecrawl execution), and be triggered again after response is sent to client, logging the end time.
+Here's a suggested step-by-step plan:
 
-Here is a simple Node.js middleware using express that logs the timing information:
+1. Navigate to the lib/services directory. You can use CLI or your IDE to do this.
 
-```javascript
-var express = require('express');
-var app = express();
+2. It's important to first understand the overall architecture and design patterns used in the code. Look for hints in the names of the folders, files, and functions. Look for patterns in how code is structured and organized - is it based on function (Model, View, Controller), feature, or something different? What kind of design principles are at play (OOP, functional programming, etc)
 
-app.use((req, res, next) => {
-    let startTime = new Date().getTime(); // start time
-    console.log(`Firecrawl service called at ${new Date(startTime)}`);
-    
-    res.on('finish', () => {
-        let endTime = new Date().getTime(); // end time
-        console.log(`Response sent at ${new Date(endTime)}, Total time ${endTime-startTime} ms`);
-    });
+3. Open the relevant service files (probably with names like firecrawl_service.js etc). Check the structure of the code: Look for variable declarations, function declarations and their implementations. Try to understand the different components, how they interact, and how flows of data and control are handled.
 
-    next();
-});
+3.  Pay attention to the interactions between service files. Many times, higher-level logic is encapsulated within functions that call lower-level functions in other files, or they are interacting with each other through exports and imports.
 
-app.get('/firecrawl_service', (req, res) => {
-    // Firecrawl service execution code
-});
+4. If there's shared code being imported from other locations, make sure to check these as well, trying to understand their purpose and how they tie into the larger codebase.
+
+5. Take notes for yourself as you go through the codebase. Make sure you're keeping an eye open both for broader architectural patterns, as well as smaller details like how individual functions work.
+
+To navigate between directories you can use the `cd` command like this:
+
+```bash
+cd lib/services
+```
+For checking the file you can print its content using `cat`:
+
+```bash
+cat firecrawl_service.js
 ```
 
-Approach for Function call:
-
-```javascript
-function firecrawlServices() {
-    // Firecrawl service execution code
-}
-
-console.log('Firecrawl service is going to be called...');
-let startTime = new Date().getTime(); // Execution start time
-firecrawlServices();
-let endTime = new Date().getTime(); // Execution end time
-console.log(`Firecrawl service was executed. Total execution time: ${endTime-startTime} ms`);
-```
-
-In both these cases, you can see a log message in the console before and after calling the Firecrawl service, and it will include the timing information.
+Please note this is a very general guideline and would vary based on the actual structure and complexity of your codebase.
