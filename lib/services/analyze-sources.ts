@@ -47,6 +47,7 @@ export type SourceAnalysis = z.infer<typeof analysisSchema>["sources"][number];
 
 export class AnalyzeSources extends FirecrawlBase {
   async gatherArticles(topic: string): Promise<SourceLink[]> {
+    const startTime = Date.now();
     const result = await this.wrapHandler(async () =>
       this.client.extract(
         [
@@ -63,6 +64,8 @@ export class AnalyzeSources extends FirecrawlBase {
         }
       )
     );
+    const endTime = Date.now();
+    console.log(`Gather Articles Execution Time: ${endTime - startTime}ms`);
 
     if (!result.success) {
       throw new ValidationError(`Failed to gather topics: ${result.error}`, {
@@ -80,6 +83,7 @@ export class AnalyzeSources extends FirecrawlBase {
   }
 
   async analyzeArticles(sources: SourceLink[]): Promise<SourceAnalysis[]> {
+    const startTime = Date.now();
     const result = await this.wrapHandler(async () =>
       this.client.extract(
         sources.map((source) => source.url),
@@ -90,6 +94,8 @@ export class AnalyzeSources extends FirecrawlBase {
         }
       )
     );
+    const endTime = Date.now();
+    console.log(`Analyze Articles Execution Time: ${endTime - startTime}ms`);
 
     if (!result.success) {
       throw new ValidationError(`Failed to analyze articles: ${result.error}`, {
