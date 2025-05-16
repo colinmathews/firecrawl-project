@@ -1,6 +1,13 @@
+
+
 import { NewsTopicCollection } from "@/lib/db/collections/news-topic";
 import { GatherTopics } from "@/lib/services/gather-topics";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+
+function generatePlaceholderImage() {
+  // TODO: Implement generatePlaceholderImage function to create a base64 encoded placeholder image
+  return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAA3NCSVQICAjb4U/gAAAgAElEQVR...";
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -30,7 +37,7 @@ export async function action({ request }: ActionFunctionArgs) {
       rawTopics.map((topic) => ({
         DayShortName: day as string,
         Name: topic.topic,
-        ThumbnailUrl: topic.thumbnail ?? "",
+        ThumbnailUrl: topic.thumbnail || generatePlaceholderImage(),
       }))
     );
 
@@ -40,3 +47,4 @@ export async function action({ request }: ActionFunctionArgs) {
     return { error };
   }
 }
+
