@@ -1,3 +1,5 @@
+
+
 import { NewsArticleCollection } from "@/lib/db/collections/news-article";
 import {
   AnalyzeSources,
@@ -28,7 +30,11 @@ export async function action({ request }: ActionFunctionArgs) {
     const sources = data.sources as SourceLink[];
 
     const service = new AnalyzeSources();
+
+    const startTime = Date.now();
     const analyzedArticles = await service.analyzeArticles(sources);
+    const endTime = Date.now();
+    console.log(`AnalyzeSources API call took ${endTime - startTime}ms`);
 
     if (analyzedArticles.length === 0) {
       return { error: "No articles could be found for this topic" };
@@ -53,3 +59,4 @@ export async function action({ request }: ActionFunctionArgs) {
     return { error };
   }
 }
+
