@@ -65,7 +65,7 @@ export class GatherTopics extends FirecrawlBase {
 
     const thumbnailUrls = await Promise.all(
       result.json.map((topic) =>
-        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : ""
+        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : this.generatePlaceholderImage()
       )
     );
 
@@ -76,9 +76,20 @@ export class GatherTopics extends FirecrawlBase {
   }
 
   private async getThumbnail(thumbnailUrl: string): Promise<string> {
-    const base64Image = await imageToBase64(thumbnailUrl);
-    const mime = this.guessMimeType(base64Image);
-    return `data:${mime};base64,${base64Image}`;
+    try {
+      const base64Image = await imageToBase64(thumbnailUrl);
+      const mime = this.guessMimeType(base64Image);
+      return `data:${mime};base64,${base64Image}`;
+    } catch {
+      // Return a placeholder image if the URL fetch fails
+      return this.generatePlaceholderImage();
+    }
+  }
+
+  private generatePlaceholderImage(): string {
+    // Placeholder could be a blank or a stock photo represented in base64
+    const placeholderImage = "default-placeholder-image-in-base64-format";
+    return `data:image/png;base64,${placeholderImage}`;
   }
 
   private guessMimeType(base64: string): string {
