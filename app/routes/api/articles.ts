@@ -1,3 +1,4 @@
+
 import { NewsArticleCollection } from "@/lib/db/collections/news-article";
 import {
   AnalyzeSources,
@@ -34,7 +35,6 @@ export async function action({ request }: ActionFunctionArgs) {
       return { error: "No articles could be found for this topic" };
     }
 
-    // Save articles to db
     const articlesColl = new NewsArticleCollection();
     const articles = await articlesColl.create(
       analyzedArticles.map((one) => ({
@@ -44,6 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
         Url: one.url,
         "Bias Rating": one.biasScore,
         Analysis: one.analysis,
+        ThumbnailUrl: one.thumbnailUrl || generatePlaceholderImage(one.name)  // Ensure a thumbnail or placeholder is set
       }))
     );
 
@@ -53,3 +54,9 @@ export async function action({ request }: ActionFunctionArgs) {
     return { error };
   }
 }
+
+function generatePlaceholderImage(name: string): string {
+  // TODO: Implement a placeholder image generator that outputs base64, use 'name' for uniqueness if needed
+  return "data:image/png;base64,<PLACEHOLDER_BASE64>";
+}
+
