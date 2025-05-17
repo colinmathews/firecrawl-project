@@ -62,6 +62,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
       {topics && (
         <>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            What's New?
+          </button>
           <div className="text-lg font-bold">Choose a topic to analyze</div>
           <div className="flex flex-col gap-8">
             {topics.map((topic) => (
