@@ -53,20 +53,28 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     );
   }
 
-  const handleToggleViewMode = () => {
-    setViewMode(viewMode === 'Latest' ? 'Last Week' : 'Latest');
+  const handleToggleViewMode = (mode: string) => {
+    setViewMode(mode);
   };
 
   return (
     <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
-      <button
-        onClick={handleToggleViewMode}
-        className="px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 transition"
-      >
-        Toggle to {viewMode === 'Latest' ? 'Last Week' : 'Latest'}
-      </button>
+      <div className="flex gap-4">
+        <button
+          onClick={() => handleToggleViewMode('Latest')}
+          className={`px-4 py-2 font-bold rounded transition ${viewMode === 'Latest' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border border-blue-700 hover:bg-blue-500 hover:text-white'}`}
+        >
+          Latest
+        </button>
+        <button
+          onClick={() => handleToggleViewMode('Last Week')}
+          className={`px-4 py-2 font-bold rounded transition ${viewMode === 'Last Week' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border border-blue-700 hover:bg-blue-500 hover:text-white'}`}
+        >
+          Last Week
+        </button>
+      </div>
       {viewMode === 'Latest' && (
-        <p className="text-sm text-gray-600">*Latest news may not be fully up to date.</p>
+        <p className="text-sm text-gray-600 mt-2">*Latest news may not be fully up to date.</p>
       )}
       {!topics && (
         <div className="mt-12 w-[500px]">
