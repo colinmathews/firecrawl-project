@@ -1,3 +1,5 @@
+
+
 import { z } from "zod";
 import { ValidationError } from "../errors";
 import { FirecrawlBase } from "./firecrawl-base";
@@ -65,7 +67,7 @@ export class GatherTopics extends FirecrawlBase {
 
     const thumbnailUrls = await Promise.all(
       result.json.map((topic) =>
-        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : ""
+        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : this.defaultThumbnail()
       )
     );
 
@@ -76,9 +78,20 @@ export class GatherTopics extends FirecrawlBase {
   }
 
   private async getThumbnail(thumbnailUrl: string): Promise<string> {
-    const base64Image = await imageToBase64(thumbnailUrl);
-    const mime = this.guessMimeType(base64Image);
-    return `data:${mime};base64,${base64Image}`;
+    try {
+      const base64Image = await imageToBase64(thumbnailUrl);
+      const mime = this.guessMimeType(base64Image);
+      return `data:${mime};base64,${base64Image}`;
+    } catch (e) {
+      // If there's an error in the thumbnail processing, return the default placeholder image.
+      return this.defaultThumbnail();
+    }
+  }
+
+  private defaultThumbnail(): string {
+    // Placeholder base64 image for a 3:2 aspect ratio 212px wide image
+    const placeholderBase64 = 'iVBORw0KGgo...';  // Shortened example; needs to be replaced with actual base64 of the placeholder image
+    return `data:image/png;base64,${placeholderBase64}`;
   }
 
   private guessMimeType(base64: string): string {
