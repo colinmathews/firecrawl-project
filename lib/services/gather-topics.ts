@@ -1,3 +1,5 @@
+
+
 import { z } from "zod";
 import { ValidationError } from "../errors";
 import { FirecrawlBase } from "./firecrawl-base";
@@ -23,6 +25,8 @@ const newsSchema = z.array(
 );
 
 export type NewsTopic = z.infer<typeof newsSchema>[number];
+
+const placeholderImage = "data:image/jpeg;base64,[Add your base64 encoded image here]";
 
 export class GatherTopics extends FirecrawlBase {
   async gatherTopics(): Promise<NewsTopic[]> {
@@ -65,7 +69,7 @@ export class GatherTopics extends FirecrawlBase {
 
     const thumbnailUrls = await Promise.all(
       result.json.map((topic) =>
-        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : ""
+        topic.thumbnail ? this.getThumbnail(topic.thumbnail) : placeholderImage
       )
     );
 
@@ -76,9 +80,13 @@ export class GatherTopics extends FirecrawlBase {
   }
 
   private async getThumbnail(thumbnailUrl: string): Promise<string> {
-    const base64Image = await imageToBase64(thumbnailUrl);
-    const mime = this.guessMimeType(base64Image);
-    return `data:${mime};base64,${base64Image}`;
+    try {
+      const base64Image = await imageToBase64(thumbnailUrl);
+      const mime = this.guessMimeType(base64Image);
+      return `data:${mime};base64,${base64Image}`;
+    } catch (error) {
+      return placeholderImage;
+    }
   }
 
   private guessMimeType(base64: string): string {
@@ -89,3 +97,4 @@ export class GatherTopics extends FirecrawlBase {
     return "application/octet-stream"; // fallback
   }
 }
+
