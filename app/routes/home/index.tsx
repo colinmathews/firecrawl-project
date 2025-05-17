@@ -43,6 +43,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [topics, setTopics] = useState<NewsTopicRecord[] | null>(
     loaderData?.topics ?? null
   );
+  const [viewMode, setViewMode] = useState('Latest'); // 'Last Week' or 'Latest'
 
   if (loaderData?.error) {
     return (
@@ -52,14 +53,26 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     );
   }
 
+  const handleToggleViewMode = () => {
+    setViewMode(viewMode === 'Latest' ? 'Last Week' : 'Latest');
+  };
+
   return (
     <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
+      <button
+        onClick={handleToggleViewMode}
+        className="px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 transition"
+      >
+        Toggle to {viewMode === 'Latest' ? 'Last Week' : 'Latest'}
+      </button>
+      {viewMode === 'Latest' && (
+        <p className="text-sm text-gray-600">*Latest news may not be fully up to date.</p>
+      )}
       {!topics && (
         <div className="mt-12 w-[500px]">
           <TopicLoader day={loaderData.day} onTopicsGenerated={setTopics} />
         </div>
       )}
-
       {topics && (
         <>
           <div className="text-lg font-bold">Choose a topic to analyze</div>
