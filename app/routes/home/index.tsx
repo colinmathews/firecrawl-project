@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toShortISOString } from "@/lib/utils/dates";
 import TopicLoader from "./topic-loader";
 import TopicCard from "./topic-card";
+import Button from "@/components/button"; // Importing Button component
 
 export function meta() {
   return [
@@ -62,6 +63,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
       {topics && (
         <>
+          <Button variant="primary" className="mb-4">What's New?</Button> {/* Adding the 'What's New?' button */}
           <div className="text-lg font-bold">Choose a topic to analyze</div>
           <div className="flex flex-col gap-8">
             {topics.map((topic) => (
