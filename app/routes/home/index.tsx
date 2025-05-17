@@ -6,7 +6,7 @@ import {
 } from "@/lib/db/collections/news-topic";
 import { type LoaderFunctionArgs } from "react-router";
 import { useState } from "react";
-import { toShortISOString } from "@/lib/utils/dates";
+import { toShortISOString, subtractDays } from "@/lib/utils/dates";
 import TopicLoader from "./topic-loader";
 import TopicCard from "./topic-card";
 
@@ -40,9 +40,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
+  const [showLatest, setShowLatest] = useState(true);
   const [topics, setTopics] = useState<NewsTopicRecord[] | null>(
     loaderData?.topics ?? null
   );
+
+  const toggleShowLatest = () => setShowLatest((prev) => !prev);
 
   if (loaderData?.error) {
     return (
@@ -54,6 +57,17 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
+      <div className="flex items-center justify-center space-x-4">
+        <button onClick={toggleShowLatest} className="px-4 py-2 bg-blue-500 text-white">
+          {showLatest ? 'Last Week' : 'Latest'}
+        </button>
+        {showLatest && (
+          <p className="text-sm italic text-gray-600">
+            Disclaimer: Latest news may not be fully up-to-date.
+          </p>
+        )}
+      </div>
+
       {!topics && (
         <div className="mt-12 w-[500px]">
           <TopicLoader day={loaderData.day} onTopicsGenerated={setTopics} />
