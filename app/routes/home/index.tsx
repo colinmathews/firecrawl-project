@@ -59,22 +59,22 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
-      <div className="flex gap-4">
+      <div className="flex">
         <button
           onClick={() => handleToggleViewMode('Latest')}
-          className={`px-4 py-2 font-bold rounded transition ${viewMode === 'Latest' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border border-blue-700 hover:bg-blue-500 hover:text-white'}`}
+          className={`flex-1 px-4 py-2 font-bold rounded-l transition-all duration-200 ease-in-out ${viewMode === 'Latest' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border hover:bg-blue-500 hover:text-white'}`}
         >
           Latest
         </button>
         <button
           onClick={() => handleToggleViewMode('Last Week')}
-          className={`px-4 py-2 font-bold rounded transition ${viewMode === 'Last Week' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border border-blue-700 hover:bg-blue-500 hover:text-white'}`}
+          className={`flex-1 px-4 py-2 font-bold rounded-r transition-all duration-200 ease-in-out ${viewMode === 'Last Week' ? 'bg-blue-700 text-white' : 'bg-white text-blue-700 border hover:bg-blue-500 hover:text-white'}`}
         >
           Last Week
         </button>
       </div>
       {viewMode === 'Latest' && (
-        <p className="text-sm text-gray-600 mt-2">*Latest news may not be fully up to date.</p>
+        <p className="text-sm text-gray-600 mt-2">*Latest news might not be up-to-date.</p>
       )}
       {!topics && (
         <div className="mt-12 w-[500px]">
