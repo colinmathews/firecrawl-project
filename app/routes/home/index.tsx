@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toShortISOString } from "@/lib/utils/dates";
 import TopicLoader from "./topic-loader";
 import TopicCard from "./topic-card";
+import { Button } from "@/components/button"; // Import Button component
 
 export function meta() {
   return [
@@ -54,6 +55,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-16 items-center justify-center mt-12 pb-44">
+      <Button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => console.log("Navigated to new content")}>What's New?</Button> {/* Added button */}
       {!topics && (
         <div className="mt-12 w-[500px]">
           <TopicLoader day={loaderData.day} onTopicsGenerated={setTopics} />
